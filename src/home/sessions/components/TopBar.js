@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 
 
-const TopBar = ({ name, }) => {
+const TopBar = ({ name, button }) => {
     return (<Box sx={{
         display: 'flex',
         backgroundColor: '#fff',
@@ -20,6 +20,7 @@ const TopBar = ({ name, }) => {
             {name}
         </Typography>
         <Box flexGrow={1} />
+        {button}
 
     </Box>);
 }

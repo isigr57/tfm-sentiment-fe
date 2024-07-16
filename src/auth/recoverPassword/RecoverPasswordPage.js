@@ -48,10 +48,10 @@ const RecoverPasswordPage = () => {
                     <img src='sapere-long.svg' alt='logo' />
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', width: '100%', gap: 0.5, p: 1 }}>
-                    <Typography variant='h5' sx={{ fontWeight: 700 }}>
+                    <Typography variant='h6' sx={{ fontWeight: 700 }}>
                         Reset your password
                     </Typography>
-                    <Typography variant='body'>
+                    <Typography variant='body2'>
                         We will send you an email with instructions to reset your password.
                     </Typography>
                 </Box>
@@ -69,7 +69,7 @@ const RecoverPasswordPage = () => {
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                    <Typography variant='caption' sx={{ fontWeight: 200, color: grey[600] }}>
+                    <Typography variant='caption' sx={{ color: grey[600] }}>
                         By signing in, you agree to our <Link underline='hover' color={'#007DFC'} fontWeight={500} href='' target="_blank">Terms of Service</Link> and <Link underline='hover' color={'#007DFC'} fontWeight={500} target="_blank" href=''>Privacy Policy</Link>.
                     </Typography>
                 </Box>

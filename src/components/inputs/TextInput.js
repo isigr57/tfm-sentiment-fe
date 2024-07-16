@@ -34,7 +34,7 @@ const TextInput = ({ name, description, placeholder, initialValue, maxLength, re
     return (
         <Box sx={{ display: "grid" }} gap={1}>
             <Box sx={{ display: "flex", alignItems: "center" }} gap={1}>
-                <Typography variant="body2">{name}</Typography>
+                <Typography variant="body2" fontWeight={700}>{name}</Typography>
                 {description ? <InputsTooltip title={description} placement="top">
                     <InfoOutlinedIcon style={{ color: grey[600], fontSize: 16 }} />
                 </InputsTooltip> : null}
@@ -57,6 +57,7 @@ const TextInput = ({ name, description, placeholder, initialValue, maxLength, re
                             borderColor: error ? 'red' : grey[300],
                             '&:focus': {
                                 borderColor: error ? 'red' : '#007DFC !important',
+                                borderWidth: 2,
                             }, // Change border color if there's an error
                         },
 

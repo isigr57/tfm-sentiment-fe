@@ -12,9 +12,6 @@ const SideBarCustom = ({ onChangeMenu }) => {
     const [selected, setSelected] = useState(0);
     const { currentUser } = useAuth();
 
-    console.log('currentUser:', currentUser);
-    console.log('photoURL:', currentUser.photoURL);
-
     const selectMenu = (index) => {
         if (index === selected) return;
         setSelected(index);

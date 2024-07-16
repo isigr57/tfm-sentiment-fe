@@ -10,7 +10,8 @@ const SearchBarContainer = styled(Box)(({ _ }) => ({
     borderRadius: '6px',
     display: 'flex',
     alignItems: 'center',
-    border: '1px solid #e9e9e9',
+    border: 'solid #e9e9e9',
+    borderWidth: 2,
     padding: 2,
     zIndex: 1000,
     '&:focus-within': {

@@ -64,10 +64,10 @@ const LoginPage = () => {
                     <img src='sapere-long.svg' alt='logo' />
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', width: '100%', gap: 0.5, p: 1 }}>
-                    <Typography variant='h5' sx={{ fontWeight: 700 }}>
+                    <Typography variant='h6' sx={{ fontWeight: 700 }}>
                         Log In
                     </Typography>
-                    <Typography variant='body'>
+                    <Typography variant='body2'>
                         Don't have an account? <Link href='/signup' underline='hover' color={'#007DFC'} fontWeight={700}>Sign up.</Link>
                     </Typography>
                 </Box>
@@ -91,7 +91,7 @@ const LoginPage = () => {
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
                             <TextInput label='Email' value={email} placeholder={'Email'} name={'Email address'} onChange={(e) => setEmail(e)} multiline={false} />
                             <TextInput label='Password' value={password} placeholder={'Password'} name={'Password'} onChange={(e) => setPassword(e)}
-                                tipChild={<Typography variant='caption' sx={{ mt: 0.5 }}>
+                                tipChild={<Typography variant='caption' fontWeight={500} sx={{ mt: 0.5 }}>
                                     <Link href='/recoverPassword' underline='hover' color={'#007DFC'}>
                                         Forgot password?
                                     </Link>
@@ -107,7 +107,7 @@ const LoginPage = () => {
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                    <Typography variant='caption' sx={{ fontWeight: 200, color: grey[600] }}>
+                    <Typography variant='caption' sx={{ color: grey[600] }}>
                         By signing in, you agree to our <Link underline='hover' color={'#007DFC'} fontWeight={500} href='#' target="_blank">Terms of Service</Link> and <Link underline='hover' color={'#007DFC'} fontWeight={500} target="_blank" href='https://www.timbal.ai/en/legal-notice.html'>Privacy Policy</Link>.
                     </Typography>
                 </Box>

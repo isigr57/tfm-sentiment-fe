@@ -12,6 +12,7 @@ import SignUpPage from "auth/signup/SignUpPage";
 import RecoverPasswordPage from "auth/recoverPassword/RecoverPasswordPage";
 import VerifyEmailPage from "auth/verifyemail/VerifyEmailPage";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { FirestoreProvider } from "data/FirestoreContext";
 
 
 const root = createRoot(document.getElementById("root"));
@@ -26,16 +27,24 @@ root.render(
   <ThemeProvider theme={theme}>
     <SnackbarProvider maxSnack={3} autoHideDuration={3737}>
       <AuthContextProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/healthcheck" element={<div>OK</div>} />
-              <Route path="/verifyemail" element={<UnProtectedRoute><VerifyEmailPage /></UnProtectedRoute>} />
-              <Route path="/recoverpassword" element={<UnProtectedRoute><RecoverPasswordPage /></UnProtectedRoute>} />
-              <Route path="/signup" element={<UnProtectedRoute><SignUpPage /></UnProtectedRoute>} />
-              <Route path="/login" element={<UnProtectedRoute><LoginPage /></UnProtectedRoute>} />
-              <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-            </Routes>
-          </BrowserRouter>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/healthcheck" element={<div>OK</div>} />
+            <Route path="/verifyemail" element={<UnProtectedRoute><VerifyEmailPage /></UnProtectedRoute>} />
+            <Route path="/recoverpassword" element={<UnProtectedRoute><RecoverPasswordPage /></UnProtectedRoute>} />
+            <Route path="/signup" element={<UnProtectedRoute><SignUpPage /></UnProtectedRoute>} />
+            <Route path="/login" element={<UnProtectedRoute><LoginPage /></UnProtectedRoute>} />
+            <Route path="/*"
+              element={
+                <FirestoreProvider>
+                  <Routes>
+                    <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+                  </Routes>
+                </FirestoreProvider>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
       </AuthContextProvider>
     </SnackbarProvider>
   </ThemeProvider>
