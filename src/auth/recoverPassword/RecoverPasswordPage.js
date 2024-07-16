@@ -60,7 +60,7 @@ const RecoverPasswordPage = () => {
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
                             <TextInput label='Email' value={email} placeholder={'Email'} name={'Email address'} onChange={(e) => setEmail(e)} multiline={false} />
                             <MainButton disabled={email.length === 0} onClick={handleRecoverPassword}>
-                                <Typography variant='body2' sx={{ fontWeight: 700, pt: 0.25, pb: 0.25 }}>
+                                <Typography variant='body2' sx={{ fontWeight: 700, pt: 0.5, pb: 0.5 }}>
                                     Reset password
                                 </Typography>
                             </MainButton>

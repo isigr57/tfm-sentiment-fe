@@ -20,7 +20,6 @@ export const FirestoreProvider = ({ children }) => {
                 const querySnapshot = await getDocs(query(sessionsRef, q));
                 const sessions = querySnapshot.docs.map(doc => doc.data());
                 return sessions;
-
             }
         } catch (error) {
             console.error('Error getting documents: ', error);

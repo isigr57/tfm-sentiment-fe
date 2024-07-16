@@ -67,7 +67,7 @@ const VerifyEmailPage = () => {
                                 Didn't receive the email?
                             </Typography>
                             <GreyButtonWithBorder onClick={handleResendEmail}>
-                                <Typography variant='body2' sx={{ fontWeight: 700, pt: 0.25, pb: 0.25 }}>
+                                <Typography variant='body2' sx={{ fontWeight: 700, pt: 0.5, pb: 0.5 }}>
                                     Resend email
                                 </Typography>
                             </GreyButtonWithBorder>
@@ -79,7 +79,7 @@ const VerifyEmailPage = () => {
                                 <Divider width={150} />
                             </Box>
                             <MainButton onClick={handleLogin}>
-                                <Typography variant='body2' sx={{ fontWeight: 700, pt: 0.25, pb: 0.25 }}>
+                                <Typography variant='body2' sx={{ fontWeight: 700, pt: 0.5, pb: 0.5 }}>
                                     Go to login
                                 </Typography>
                             </MainButton>

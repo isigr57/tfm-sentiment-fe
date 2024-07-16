@@ -5,18 +5,20 @@ import { useAuth } from 'auth/AuthContext';
 import SessionCard from './components/SessionCard';
 import { useEffect } from 'react';
 import { useFirestore } from 'data/FirestoreContext';
+import { useState } from 'react';
 
 const Sessions = () => {
 
     const { currentUser } = useAuth();
     const { getSessions } = useFirestore();
 
-    const rows = [];
+    const [rows, setRows] = useState([]);
 
     useEffect(() => {
         const fetch = async () => {
             const sessions = await getSessions();
             console.log(sessions);
+            setRows(sessions);
         };
         fetch();
     }, [getSessions]);
@@ -37,7 +39,7 @@ const Sessions = () => {
                 {rows.map((row, index) => (
                     <Grid item xs={12} md={12} lg={12} key={index} >
                         <Box key={row.id} onClick={() => { }} >
-                            <SessionCard index={index} />
+                            <SessionCard session={row} index={index} />
                         </Box>
                     </Grid>))
                 }

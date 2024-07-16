@@ -98,7 +98,7 @@ const LoginPage = () => {
                                 </Typography>}
                                 multiline={false} />
                             <MainButton disabled={password.length === 0 || email.length === 0} onClick={handleLogin}>
-                                <Typography variant='body2' sx={{ fontWeight: 700, pt: 0.25, pb: 0.25 }}>
+                                <Typography variant='body2' sx={{ fontWeight: 700, pt: 0.5, pb: 0.5 }}>
                                     Log In
                                 </Typography>
                             </MainButton>

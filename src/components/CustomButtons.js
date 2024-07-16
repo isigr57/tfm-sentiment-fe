@@ -1,18 +1,9 @@
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { grey } from '@mui/material/colors';
+import { mainBlue } from './CustomColors';
 
-const GreyButton = styled(Button)((_) => ({
-    color: grey[900],
-    backgroundColor: 'transparent',
-    borderRadius: '6px',
-    textTransform: 'none',
-    padding: '8px 16px',
-    margin: '0px',
-    '&:hover': {
-        backgroundColor: grey[200],
-    }
-}));
+
 
 const PopMenuButton = styled(Button)((_) => ({
     color: 'black',
@@ -22,7 +13,7 @@ const PopMenuButton = styled(Button)((_) => ({
     padding: '8px 16px',
     margin: '0px',
     '&:hover': {
-        backgroundColor: '#E4EFF6',
+        backgroundColor: mainBlue[50],
     }
 }));
 
@@ -38,29 +29,6 @@ const GreyButtonWithBorder = styled(Button)((_) => ({
         backgroundColor: grey[200],
     }
 }));
-
-const PlanButton = styled(Button)((_) => ({
-    color: grey[900],
-    backgroundColor: grey[200],
-    borderRadius: '6px',
-    textTransform: 'none',
-    padding: '4px 8px',
-    '&:hover': {
-        backgroundColor: grey[300],
-    },
-}));
-
-const mainBlue = {
-    100: '#198afc',
-    200: '#3297fc',
-    300: '#4ca4fc',
-    400: '#66b1fd',
-    500: '#007DFC',
-    600: '#0070e2',
-    700: '#0064c9',
-    800: '#0057b0',
-    900: '#004b97',
-};
 
 const MainButton = styled(Button)((_) => ({
     color: 'white',
@@ -90,7 +58,7 @@ const NavBarButton = styled(Button)((_) => ({
     margin: '0px',
     gap: '5px',
     '&:hover': {
-        backgroundColor: '#E4EFF6',
+        backgroundColor: mainBlue[50],
     },
     //remove start icon margin
     '& .MuiButton-startIcon': {
@@ -98,7 +66,7 @@ const NavBarButton = styled(Button)((_) => ({
     }
 }));
 
-const UpgradeButton = styled(Button)((_) => ({
+const ModalConfirmButton = styled(Button)((_) => ({
     color: 'white',
     backgroundColor: 'black',
     borderRadius: '6px',
@@ -110,5 +78,17 @@ const UpgradeButton = styled(Button)((_) => ({
     }
 }));
 
+const ModalCancelButton = styled(Button)((_) => ({
+    color: 'black',
+    backgroundColor: grey[300],
+    borderRadius: '6px',
+    textTransform: 'none',
+    padding: '8px ',
+    margin: '0px',
+    '&:hover': {
+        backgroundColor: grey[600],
+    }
+}));
 
-export { GreyButton, PlanButton, MainButton, GreyButtonWithBorder, NavBarButton, UpgradeButton, PopMenuButton };
+
+export { MainButton, GreyButtonWithBorder, NavBarButton, PopMenuButton, ModalConfirmButton, ModalCancelButton };
