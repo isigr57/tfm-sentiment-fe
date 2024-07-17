@@ -1,8 +1,6 @@
 function formatDate(timestamp) {
     const date = new Date(timestamp.seconds * 1000);
 
-    console.log('date', date);
-
     const options = {
         weekday: 'short', // 'Tue'
         year: 'numeric',  // '1975'

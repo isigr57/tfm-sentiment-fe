@@ -6,12 +6,14 @@ import UserMenu from './UserMenu';
 import { NavBarButton } from 'components/CustomButtons';
 import { useAuth } from 'auth/AuthContext';
 import { mainBlue } from 'components/CustomColors';
+import { useDashboard } from 'home/DashboardContext';
 
 
 const SideBarCustom = ({ onChangeMenu }) => {
 
     const [selected, setSelected] = useState(0);
     const { currentUser } = useAuth();
+    const { page, setPage } = useDashboard();
 
     const selectMenu = (index) => {
         if (index === selected) return;
@@ -35,12 +37,12 @@ const SideBarCustom = ({ onChangeMenu }) => {
         <Box sx={{ display: 'flex', flexDirection: 'column', borderRight: '1px solid #e9e9e9', backgroundColor: '#fff' }}>
             <Box sx={{ display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', gap: 3, pt: 2, pb: 2, pr: 1, pl: 1 }}>
                 <img alt="Logo" src="sapere.svg" width="40" />
-                <NavBarButton startIcon={<LibraryBooksOutlined sx={{ width: 25, height: 25 }} />} onClick={() => selectMenu(0)} sx={{ backgroundColor: selected === 0 ? mainBlue[50] : 'transparent' }}>
+                <NavBarButton startIcon={<LibraryBooksOutlined sx={{ width: 25, height: 25 }} />} onClick={() => setPage('sessions')} sx={{ backgroundColor: page === 'sessions' ? mainBlue[100] : 'transparent' }}>
                     <Typography noWrap variant="body2" fontWeight={700}>
                         Sessions
                     </Typography>
                 </NavBarButton>
-                <NavBarButton startIcon={<SchoolOutlined sx={{ width: 25, height: 25 }} />} onClick={() => selectMenu(0)} sx={{ backgroundColor: selected === 1 ? mainBlue[50] : 'transparent' }}>
+                <NavBarButton startIcon={<SchoolOutlined sx={{ width: 25, height: 25 }} />} onClick={() => setPage('students')} sx={{ backgroundColor: page === 'students' ? mainBlue[100] : 'transparent' }}>
                     <Typography noWrap variant="body2" fontWeight={700}>
                         Students
                     </Typography>
@@ -52,8 +54,7 @@ const SideBarCustom = ({ onChangeMenu }) => {
                         onClick={handleClick}
                         aria-controls={openUserMenu ? "user-menu" : undefined}
                         aria-haspopup="true"
-                        aria-expanded={openUserMenu ? "true" : undefined}
-                        sx={{ backgroundColor: selected === 4 ? mainBlue[50] : 'transparent' }}>
+                        aria-expanded={openUserMenu ? "true" : undefined}>
                         <Typography noWrap variant="body2" fontWeight={700} sx={{ maxWidth: 60 }}>
                             {currentUser.displayName ?? currentUser.email}
                         </Typography>

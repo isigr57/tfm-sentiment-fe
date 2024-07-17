@@ -13,7 +13,7 @@ const PopMenuButton = styled(Button)((_) => ({
     padding: '8px 16px',
     margin: '0px',
     '&:hover': {
-        backgroundColor: mainBlue[50],
+        backgroundColor: mainBlue[100],
     }
 }));
 
@@ -58,7 +58,7 @@ const NavBarButton = styled(Button)((_) => ({
     margin: '0px',
     gap: '5px',
     '&:hover': {
-        backgroundColor: mainBlue[50],
+        backgroundColor: mainBlue[100],
     },
     //remove start icon margin
     '& .MuiButton-startIcon': {

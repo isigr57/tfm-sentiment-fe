@@ -8,6 +8,8 @@ import { CancelOutlined } from '@mui/icons-material';
 import { DeleteOutline, EditOutlined } from '@mui/icons-material';
 import { ModalCancelButton, ModalConfirmButton, PopMenuButton } from 'components/CustomButtons';
 import { useState } from 'react';
+import { useFirestore } from 'data/FirestoreContext';
+import TextInput from 'components/inputs/TextInput';
 
 
 
@@ -16,6 +18,10 @@ const SessionCard = ({ session }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [newName, setNewName] = useState(session.name);
+
+    const { deleteSession, updateSession } = useFirestore();
 
     const handleClick = (event) => {
         event.stopPropagation();
@@ -27,9 +33,11 @@ const SessionCard = ({ session }) => {
         setAnchorEl(null);
     }
 
-    const handleDeleteMenu = (event) => {
+    const handleDeleteAction = async (event) => {
         event.stopPropagation();
         setAnchorEl(null);
+        setOpenDeleteDialog(false);
+        await deleteSession(session.id);
     }
 
     const handleCloseDeleteDialog = (event) => {
@@ -41,6 +49,24 @@ const SessionCard = ({ session }) => {
     const handleOpenDeleteDialog = (event) => {
         event.stopPropagation();
         setOpenDeleteDialog(true);
+    }
+
+    const handleEditAction = async (event) => {
+        event.stopPropagation();
+        setAnchorEl(null);
+        setOpenEditDialog(false);
+        await updateSession({ ...session, name: newName });
+    }
+
+    const handleCloseEditDialog = (event) => {
+        event.stopPropagation();
+        setAnchorEl(null);
+        setOpenEditDialog(false);
+    }
+
+    const handleOpenEditDialog = (event) => {
+        event.stopPropagation();
+        setOpenEditDialog(true);
     }
 
     return (<>
@@ -69,7 +95,7 @@ const SessionCard = ({ session }) => {
                 <Typography variant="body2" sx={{ fontWeight: 700 }}>{session.studentsCount ?? 0}</Typography>
                 <GroupOutlined />
                 <IconButton onClick={handleClick} >
-                    <MoreVertOutlined sx={{ color: grey[500] }} onClick={(e) => { }} />
+                    <MoreVertOutlined sx={{ color: grey[500] }} />
                 </IconButton>
             </Box>
 
@@ -88,7 +114,7 @@ const SessionCard = ({ session }) => {
             }}
         >
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', ml: 1, mr: 1 }}>
-                <PopMenuButton onClick={() => { }} startIcon={<EditOutlined sx={{ width: 25, height: 25 }} />}>
+                <PopMenuButton onClick={handleOpenEditDialog} startIcon={<EditOutlined sx={{ width: 25, height: 25 }} />}>
                     <Typography variant="body2" sx={{ fontWeight: 700 }}>
                         Rename
                     </Typography>
@@ -138,7 +164,7 @@ const SessionCard = ({ session }) => {
                                 Cancel
                             </Typography>
                         </ModalCancelButton>
-                        <ModalConfirmButton onClick={handleDeleteMenu} sx={{ backgroundColor: 'red' }} >
+                        <ModalConfirmButton onClick={handleDeleteAction} sx={{ backgroundColor: 'red' }} >
                             <Typography variant="body2" sx={{ fontWeight: 700 }}>
                                 Delete
                             </Typography>
@@ -146,7 +172,49 @@ const SessionCard = ({ session }) => {
                     </Box>
                 </Box>
             </Box>
-        </Dialog ></>
+        </Dialog >
+        <Dialog
+            open={openEditDialog}
+            onClose={handleCloseEditDialog}
+            onClick={(e) => e.stopPropagation()}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            sx={{
+                borderRadius: '6px',
+                '& .MuiBackdrop-root': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                    backdropFilter: 'blur(2px)',
+                }
+            }}
+            fullWidth
+        >
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Box sx={{ p: 1, pb: 0 }}>
+                    <IconButton size="small" sx={{ m: 0, color: 'black' }} onClick={handleCloseEditDialog}>
+                        <CancelOutlined />
+                    </IconButton>
+                </Box>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 4, pt: 0, }}>
+                <Typography variant="h6" sx={{ fontWeight: 700 }}>Edit Session</Typography>
+                <TextInput label='Name' initialValue={session.name} placeholder={'Session name'} name={'Session name'} onChange={(e) => setNewName(e)} multiline={false} />
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                        <ModalCancelButton onClick={handleCloseEditDialog} >
+                            <Typography variant="body2">
+                                Cancel
+                            </Typography>
+                        </ModalCancelButton>
+                        <ModalConfirmButton onClick={handleEditAction} >
+                            <Typography variant="body2" >
+                                Save
+                            </Typography>
+                        </ModalConfirmButton>
+                    </Box>
+                </Box>
+            </Box>
+        </Dialog >
+    </>
     );
 }
 export default SessionCard;
