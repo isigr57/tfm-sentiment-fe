@@ -1,15 +1,28 @@
 
 import { KeyboardArrowDownOutlined, KeyboardArrowUpOutlined, LibraryBooksOutlined } from '@mui/icons-material';
-import { Avatar, Box, Collapse, IconButton, Typography } from '@mui/material';
+import { Avatar, Box, Collapse, IconButton, Typography, Grid } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { mainBlue } from 'components/CustomColors';
-import { useState } from 'react';
+import { useFirestore } from 'data/FirestoreContext';
+import SessionCard from 'home/sessions/components/SessionCard';
+import { useEffect, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
+
 
 
 const StudentCard = ({ student }) => {
 
+    const { getDocsFromReferences } = useFirestore();
     const [open, setOpen] = useState(false);
+    const [sessions, setSessions] = useState([]);
+
+    useEffect(() => {
+        const fetchSessions = async () => {
+            const fetchedSessions = await getDocsFromReferences(student.sessions);
+            setSessions(fetchedSessions);
+        }
+        fetchSessions();
+    }, [student.sessions, getDocsFromReferences]);
 
     const handleClick = (event) => {
         event.stopPropagation();
@@ -63,7 +76,7 @@ const StudentCard = ({ student }) => {
                         <Box sx={{ display: 'flex', gap: 4 }}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                                 <Avatar variant='square' sx={{ borderRadius: '6px', width: 150, height: 200 }} src={student.imagePath ?? ''} alt={student.name} />
-                                <Typography variant="caption" sx={{ fontWeight: 500 }}>Student since {student.createdAt.toLocaleDateString()}</Typography>
+                                <Typography variant="caption" sx={{ fontWeight: 500 }}>Student since {new Date(student.createdAt.seconds * 1000).toLocaleDateString()}</Typography>
                                 <Typography variant="body2" sx={{ fontWeight: 700, pt: 2 }}>Recognition Images</Typography>
                                 <Box sx={{ display: 'flex', gap: 1 }}>
                                     {student.recognitionImages.map((image, index) => (
@@ -71,14 +84,15 @@ const StudentCard = ({ student }) => {
                                     ))}
                                 </Box>
                             </Box>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 700 }}>Sessions ({student.sessionsCount})</Typography>
-                                {student.sessions.map((session, index) => (
-                                    <Box key={index} sx={{ display: 'flex', gap: 2 }}>
-                                        <Typography variant="body2" sx={{ fontWeight: 700 }}>{session.createdAt.toLocaleDateString()}</Typography>
-                                        <Typography variant="body2" sx={{ fontWeight: 700 }}>{session.createdAt.toLocaleTimeString()}</Typography>
-                                    </Box>
-                                ))}
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
+                                <Typography variant="body2" sx={{ fontWeight: 700, pb: 1 }}>Sessions ({student.sessionsCount})</Typography>
+                                <Grid container spacing={2} sx={{ maxHeight: 290, overflowY: 'auto' }}>
+                                    {sessions.map((session, index) => (
+                                        <Grid item xs={12} md={12} lg={12} key={index} >
+                                            <SessionCard session={session} hideOptions />
+                                        </Grid>))
+                                    }
+                                </Grid>
                             </Box>
                         </Box>
 

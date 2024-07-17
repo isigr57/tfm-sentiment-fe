@@ -8,8 +8,12 @@ import StudentCard from './components/StudentCard';
 
 const StudentsPage = () => {
 
-    const { students, addDummyStudent } = useFirestore();
+    const { students, getStudents, addDummyStudent } = useFirestore();
     const [filteredStudents, setFilteredStudents] = useState([]);
+
+    useEffect(() => {
+        getStudents();
+    }, [getStudents]);
 
     useEffect(() => {
         setFilteredStudents(students);

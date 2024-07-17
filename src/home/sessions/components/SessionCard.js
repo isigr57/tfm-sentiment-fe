@@ -13,7 +13,7 @@ import TextInput from 'components/inputs/TextInput';
 
 
 
-const SessionCard = ({ session }) => {
+const SessionCard = ({ session, hideOptions = false, sx }) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -94,9 +94,9 @@ const SessionCard = ({ session }) => {
             <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
                 <Typography variant="body2" sx={{ fontWeight: 700 }}>{session.studentsCount ?? 0}</Typography>
                 <GroupOutlined />
-                <IconButton onClick={handleClick} >
+                {hideOptions ? <Box sx={{ pr: 1 }} /> : <IconButton onClick={handleClick} >
                     <MoreVertOutlined sx={{ color: grey[500] }} />
-                </IconButton>
+                </IconButton>}
             </Box>
 
         </Box>

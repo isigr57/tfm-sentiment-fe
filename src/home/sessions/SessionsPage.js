@@ -9,8 +9,12 @@ import { useEffect, useState } from 'react';
 const Sessions = () => {
 
     const { currentUser } = useAuth();
-    const { sessions, addDummySession } = useFirestore();
+    const { sessions, getSessions, addDummySession } = useFirestore();
     const [filteredSessions, setFilteredSessions] = useState([]);
+
+    useEffect(() => {
+        getSessions();
+    }, [getSessions]);
 
     useEffect(() => {
         setFilteredSessions(sessions);
