@@ -8,7 +8,39 @@ const Firestore = createContext();
 export const FirestoreProvider = ({ children }) => {
 
     const { currentUser } = useAuth();
-    const [rows, setRows] = useState([]);
+    const [sessions, setSessions] = useState([]);
+    const [students] = useState([
+        {
+            createdAt: new Date(),
+            name: 'Demo Student',
+            email: 'demo@salle.com',
+            sessionsCount: 0,
+            sessions: [],
+            teachersId: [],
+            imagePath: 'https://placehold.co/400',
+            recognitionImages: [
+                'https://placehold.co/400',
+                'https://placehold.co/400',
+                'https://placehold.co/400',
+                'https://placehold.co/400'
+            ]
+        },
+        {
+            createdAt: new Date(),
+            name: 'Demo Student 2',
+            email: 'demo@salle.com',
+            sessionsCount: 0,
+            sessions: [],
+            teachersId: [],
+            imagePath: 'https://placehold.co/400',
+            recognitionImages: [
+                'https://placehold.co/400',
+                'https://placehold.co/400',
+                'https://placehold.co/400',
+                'https://placehold.co/400'
+            ]
+        },
+    ]);
 
     const getSessions = useCallback(async () => {
         try {
@@ -41,9 +73,9 @@ export const FirestoreProvider = ({ children }) => {
                     teacherId: user.uid
                 };
                 await addDoc(sessionsRef, session);
-                const updatedRows = await getSessions();
-                if (updatedRows) {
-                    setRows(updatedRows);
+                const updatedSessions = await getSessions();
+                if (updatedSessions) {
+                    setSessions(updatedSessions);
                 }
             }
         } catch (error) {
@@ -57,13 +89,13 @@ export const FirestoreProvider = ({ children }) => {
             if (user) {
                 const sessionsRef = collection(db, 'sessions');
                 await deleteDoc(doc(sessionsRef, id));
-                setRows(rows.filter(row => row.id !== id));
+                setSessions(sessions.filter(row => row.id !== id));
             }
         } catch (error) {
             console.error('Error deleting document: ', error);
         }
 
-    }, [currentUser, rows]);
+    }, [currentUser, sessions]);
 
     const updateSession = useCallback(async (session) => {
         try {
@@ -74,9 +106,9 @@ export const FirestoreProvider = ({ children }) => {
             if (user) {
                 const sessionsRef = collection(db, 'sessions');
                 await updateDoc(doc(sessionsRef, session.id), data);
-                const updatedRows = await getSessions();
-                if (updatedRows) {
-                    setRows(updatedRows);
+                const updatedSessions = await getSessions();
+                if (updatedSessions) {
+                    setSessions(updatedSessions);
                 }
             }
         } catch (error) {
@@ -85,20 +117,20 @@ export const FirestoreProvider = ({ children }) => {
     }, [currentUser, getSessions]);
 
     useEffect(() => {
-        if (!currentUser.uid) {
+        if (!currentUser || !currentUser.uid) {
             return;
         }
         const fetchData = async () => {
             const sessions = await getSessions();
             if (sessions) {
-                setRows(sessions);
+                setSessions(sessions);
             }
         }
         fetchData();
     }, [currentUser, getSessions]);
 
     return (
-        <Firestore.Provider value={{ rows, getSessions, deleteSession, addDummySession, updateSession }}>
+        <Firestore.Provider value={{ sessions, students, getSessions, deleteSession, addDummySession, updateSession }}>
             {children}
         </Firestore.Provider>
     );

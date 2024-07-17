@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
-import TopBar from './components/TopBar';
-import SearchBar from './components/SearchBar';
+import TopBar from '../components/TopBar';
+import SearchBar from '../components/SearchBar';
 import { useAuth } from 'auth/AuthContext';
 import SessionCard from './components/SessionCard';
 import { useFirestore } from 'data/FirestoreContext';
@@ -9,38 +9,36 @@ import { useEffect, useState } from 'react';
 const Sessions = () => {
 
     const { currentUser } = useAuth();
-    const { rows, addDummySession } = useFirestore();
-    const [filteredRows, setFilteredRows] = useState([]);
+    const { sessions, addDummySession } = useFirestore();
+    const [filteredSessions, setFilteredSessions] = useState([]);
 
     useEffect(() => {
-        setFilteredRows(rows);
-    }, [rows]);
+        setFilteredSessions(sessions);
+    }, [sessions]);
 
     const handleSearch = (search) => {
-        const filtered = rows.filter((row) =>
-            row.name.toLowerCase().includes(search.toLowerCase())
+        const filtered = sessions.filter((session) =>
+            session.name.toLowerCase().includes(search.toLowerCase())
         );
-        setFilteredRows(filtered);
+        setFilteredSessions(filtered);
     }
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', overflowY: 'auto' }} >
-            <TopBar name={`My Sessions (${filteredRows.length}) `} />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }} >
+            <TopBar name={`My Sessions (${filteredSessions.length}) `} />
             <Button variant="contained" color="primary" onClick={addDummySession} sx={{ m: 4 }}>Add Session</Button>
             <Grid container spacing={2} sx={{ p: 4 }}>
                 <Grid item xs={12} md={6} lg={6}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                         <Typography variant="h5" sx={{ fontWeight: 700 }}>{`Welcome back, ${(currentUser.displayName ?? currentUser.email).split(' ')[0]}!`}</Typography>
-                        <SearchBar onSearch={handleSearch} />
+                        <SearchBar onSearch={handleSearch} placeholder={"Search my flows"} />
                     </Box>
                 </Grid>
             </Grid>
             <Grid container spacing={2} sx={{ p: 4, pt: 0 }}>
-                {filteredRows.map((row, index) => (
+                {filteredSessions.map((session, index) => (
                     <Grid item xs={12} md={12} lg={12} key={index} >
-                        <Box key={row.id} onClick={() => { }} >
-                            <SessionCard session={row} index={index} />
-                        </Box>
+                        <SessionCard session={session} />
                     </Grid>))
                 }
             </Grid>

@@ -51,7 +51,7 @@ const CustomTextField = styled(InputBase)(({ theme }) => ({
 
 
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, placeholder }) => {
 
     const handleSearch = (event) => {
         onSearch(event.target.value);
@@ -63,7 +63,7 @@ const SearchBar = ({ onSearch }) => {
             <CustomTextField
                 variant="outlined"
                 fullWidth
-                placeholder="Search my flows"
+                placeholder={placeholder}
                 onChange={handleSearch}
             />
         </SearchBarContainer>

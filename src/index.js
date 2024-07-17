@@ -38,7 +38,7 @@ root.render(
               element={
                 <FirestoreProvider>
                   <Routes>
-                    <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+                    <Route path="/*" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                   </Routes>
                 </FirestoreProvider>
               }
