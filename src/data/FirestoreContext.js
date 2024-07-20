@@ -24,14 +24,14 @@ export const FirestoreProvider = ({ children }) => {
     const getDocsFromReferences = async (references) => {
         console.log('getDocsFromReferences');
         const docs = [];
-        references.forEach(async (reference) => {
+        for (const reference of references) {
             const docSnap = await getDoc(reference);
             if (docSnap.exists()) {
                 docs.push({ id: docSnap.id, ...docSnap.data() });
             } else {
                 console.log('No such document!');
             }
-        });
+        }
         return docs;
     }
 
@@ -111,6 +111,23 @@ export const FirestoreProvider = ({ children }) => {
         }
     }, [currentUser]);
 
+    const getSession = useCallback(async (id) => {
+        try {
+            const user = currentUser;
+            if (user) {
+                const sessionsRef = collection(db, 'sessions');
+                const docSnap = await getDoc(doc(sessionsRef, id));
+                if (docSnap.exists()) {
+                    return { id: docSnap.id, ...docSnap.data() };
+                } else {
+                    console.log('No such document!');
+                }
+            }
+        } catch (error) {
+            console.error('Error getting document: ', error);
+        }
+    }, [currentUser]);
+
     const addDummySession = useCallback(async () => {
         console.log('addDummySession');
         try {
@@ -170,7 +187,7 @@ export const FirestoreProvider = ({ children }) => {
     }, [currentUser, getSessions]);
 
     return (
-        <Firestore.Provider value={{ sessions, students, getSessions, deleteSession, addDummySession, updateSession, getStudents, addDummyStudent, getDocFromReference, getDocsFromReferences }}>
+        <Firestore.Provider value={{ sessions, students, getSessions, getSession, deleteSession, addDummySession, updateSession, getStudents, addDummyStudent, getDocFromReference, getDocsFromReferences }}>
             {children}
         </Firestore.Provider>
     );

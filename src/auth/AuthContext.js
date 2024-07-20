@@ -52,6 +52,10 @@ export const AuthContextProvider = ({ children }) => {
         localStorage.setItem('x-auth-token', token);
     }
 
+    const deleteAccount = async () => {
+        await auth.currentUser.delete();
+    }
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -70,7 +74,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ googleSignIn, emailSignIn, emailSignUp, recoverPassword, resendVerificationEmail, loading, logOut, currentUser, isEmailVerified, refreshToken }}>
+        <AuthContext.Provider value={{ googleSignIn, emailSignIn, emailSignUp, recoverPassword, resendVerificationEmail, loading, logOut, currentUser, isEmailVerified, refreshToken, deleteAccount }}>
             {children}
         </AuthContext.Provider>
     );

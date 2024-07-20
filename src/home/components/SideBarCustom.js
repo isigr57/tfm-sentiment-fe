@@ -26,7 +26,7 @@ const SideBarCustom = () => {
     return (<>
         <Box sx={{ display: 'flex', flexDirection: 'column', borderRight: '1px solid #e9e9e9', backgroundColor: '#fff' }}>
             <Box sx={{ display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', gap: 3, pt: 2, pb: 2, pr: 1, pl: 1 }}>
-                <img alt="Logo" src="sapere.svg" width="40" />
+                <img alt="Logo" src="/sapere.svg" width="40" />
                 <NavBarButton
                     startIcon={<LibraryBooksOutlined sx={{ width: 25, height: 25 }} />}
                     onClick={() => navigate('/')}

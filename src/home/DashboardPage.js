@@ -2,9 +2,11 @@ import { Box } from '@mui/material';
 import SideBarCustom from './components/SideBarCustom'
 import Sessions from './sessions/SessionsPage';
 import useDocumentTitle from 'utils/useDocumentTitle';
-import { Routes } from 'react-router-dom';
+import { Navigate, Routes } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import StudentsPage from './students/StudentsPage';
+import ProfilePage from './settings/ProfilePage';
+import SessionDetailPage from './sessiondetail/SessionDetailPage';
 
 
 
@@ -21,6 +23,9 @@ const DashboardPage = () => {
                 <Routes>
                     <Route path="/" element={<Sessions />} />
                     <Route path="/students" element={<StudentsPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/session/:sessionId" element={<SessionDetailPage />} />
+                    <Route path="/*" element={<Navigate to="/" />} />
                 </Routes>
             </Box>
         </Box>

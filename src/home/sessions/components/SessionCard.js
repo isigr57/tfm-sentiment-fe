@@ -10,10 +10,11 @@ import { ModalCancelButton, ModalConfirmButton, PopMenuButton } from 'components
 import { useState } from 'react';
 import { useFirestore } from 'data/FirestoreContext';
 import TextInput from 'components/inputs/TextInput';
+import { useNavigate } from 'react-router-dom';
 
 
 
-const SessionCard = ({ session, hideOptions = false, sx }) => {
+const SessionCard = ({ session, hideOptions = false }) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -22,6 +23,8 @@ const SessionCard = ({ session, hideOptions = false, sx }) => {
     const [newName, setNewName] = useState(session.name);
 
     const { deleteSession, updateSession } = useFirestore();
+
+    const navigate = useNavigate();
 
     const handleClick = (event) => {
         event.stopPropagation();
@@ -84,7 +87,7 @@ const SessionCard = ({ session, hideOptions = false, sx }) => {
                 borderColor: mainBlue[500],
                 backgroundColor: mainBlue[50],
             }
-        }}>
+        }} onClick={() => navigate(`/session/${session.id}`)}>
             <Avatar variant='square' sx={{ borderRadius: '6px' }} src={session.imagePath ?? ''} alt={session.name} />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="body" sx={{ fontWeight: 700 }}>{session.name}</Typography>

@@ -6,7 +6,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { grey } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
-import { PersonOutlineOutlined, SettingsOutlined } from '@mui/icons-material';
+import { PersonOutlineOutlined } from '@mui/icons-material';
 
 
 const UserMenu = ({ anchorEl, menuId, buttonId, open, handleClose, userName, userEmail }) => {
@@ -49,7 +49,6 @@ const UserMenu = ({ anchorEl, menuId, buttonId, open, handleClose, userName, use
                 }
             }}
         >
-
             <Box sx={{ display: 'flex', p: 2, pt: 0, gap: 2 }}>
                 <Box sx={{ textAlign: 'left', minWidth: '200px' }}>
                     <Typography sx={{ p: 0, m: 0, fontWeight: 700 }} variant="body1">{userName}</Typography>
@@ -58,15 +57,9 @@ const UserMenu = ({ anchorEl, menuId, buttonId, open, handleClose, userName, use
             </Box>
             <Divider />
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', m: 1 }}>
-                <PopMenuButton startIcon={<PersonOutlineOutlined sx={{ width: 25, height: 25 }} />}>
+                <PopMenuButton startIcon={<PersonOutlineOutlined sx={{ width: 25, height: 25 }} />} onClick={() => { handleClose(); navigate('/profile') }} >
                     <Typography variant="body2" sx={{ fontWeight: 700 }}>
                         Profile
-                    </Typography>
-                    <Box flexGrow={1} />
-                </PopMenuButton>
-                <PopMenuButton startIcon={< SettingsOutlined sx={{ width: 25, height: 25 }} />} >
-                    <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                        Settings
                     </Typography>
                     <Box flexGrow={1} />
                 </PopMenuButton>
