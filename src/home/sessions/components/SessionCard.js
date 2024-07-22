@@ -95,7 +95,7 @@ const SessionCard = ({ session, hideOptions = false }) => {
             </Box>
             <Box flexGrow={1} />
             <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
-                <Typography variant="body2" sx={{ fontWeight: 700 }}>{session.studentsCount ?? 0}</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 700 }}>{session.students.length ?? 0}</Typography>
                 <GroupOutlined />
                 {hideOptions ? <Box sx={{ pr: 1 }} /> : <IconButton onClick={handleClick} >
                     <MoreVertOutlined sx={{ color: grey[500] }} />

@@ -46,7 +46,7 @@ const RadarChartCustom = () => {
 
     return (
         <Box sx={{ height: 350, backgroundColor: 'white', border: '2px solid, #e9e9e9', borderRadius: '6px', display: 'flex', flexDirection: 'column', p: 2, gap: 2 }}>
-            <Typography variant="body2" sx={{ fontWeight: 700 }}>Sentiment</Typography>
+            <Typography variant="body" sx={{ fontWeight: 700 }}>Sentiment</Typography>
             <ResponsiveContainer height='100%' width='100%'>
                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
                     <PolarGrid />

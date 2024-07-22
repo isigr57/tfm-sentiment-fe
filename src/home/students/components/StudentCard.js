@@ -49,7 +49,7 @@ const StudentCard = ({ student }) => {
             </Box>
             <Box flexGrow={1} />
             <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
-                <Typography variant="body2" sx={{ fontWeight: 700 }}>{student.sessionsCount ?? 0}</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 700 }}>{student.sessions.length ?? 0}</Typography>
                 <LibraryBooksOutlined />
                 <IconButton onClick={handleClick} >
                     {!open ? <KeyboardArrowDownOutlined sx={{ color: grey[500] }} /> : <KeyboardArrowUpOutlined sx={{ color: grey[500] }} />}
@@ -81,7 +81,7 @@ const StudentCard = ({ student }) => {
                                 </Box>
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
-                                <Typography variant="body2" sx={{ fontWeight: 700, pb: 1 }}>Sessions ({student.sessionsCount})</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 700, pb: 1 }}>Sessions ({student.sessions.length})</Typography>
                                 <Grid container spacing={2} sx={{ maxHeight: 290, overflowY: 'auto' }}>
                                     {sessions.map((session, index) => (
                                         <Grid item xs={12} md={12} lg={12} key={index} >

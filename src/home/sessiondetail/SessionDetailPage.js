@@ -11,6 +11,8 @@ import RadarChartCustom from './components/RadarChartCustom';
 import LineChartCustom from './components/LineChartCustom';
 import MainEmotionCard from './components/MainEmotionCard';
 import Loader from 'components/Loader';
+import GaugeIndicatorCard from './components/GaugeIndicatorCard';
+import StudentsCountCard from './components/StudentsCountCard';
 
 const SessionDetailPage = () => {
     const { sessionId } = useParams();
@@ -42,16 +44,16 @@ const SessionDetailPage = () => {
             />
             <Grid container spacing={2} sx={{ p: 4 }}>
                 <Grid item xs={12} md={12} lg={12}>
-                    <Typography variant="h6" sx={{ fontWeight: 700 }}>Overview</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 700, p: 1, pt: 0 }}>Overview</Typography>
                 </Grid>
                 <Grid item xs={12} md={6} lg={4}>
                     <MainEmotionCard emotion={"Neutral"} />
                 </Grid>
                 <Grid item xs={12} md={6} lg={4}>
-                    <MainEmotionCard emotion={"Sad"} />
+                    <GaugeIndicatorCard value={75.2} />
                 </Grid>
                 <Grid item xs={12} md={6} lg={4}>
-                    <MainEmotionCard emotion={"Angry"} />
+                    <StudentsCountCard value={session.students.length} />
                 </Grid>
 
                 <Grid item xs={12} md={4} lg={4}>
