@@ -126,11 +126,11 @@ const data = [
     },
 ];
 
-const LineChartCustom = () => {
+const LineChartCustom = ({ title }) => {
 
     return (
         <Box sx={{ height: 350, backgroundColor: 'white', border: '2px solid, #e9e9e9', borderRadius: '6px', display: 'flex', flexDirection: 'column', p: 2, gap: 2 }}>
-            <Typography variant="body" sx={{ fontWeight: 700 }}>Attention over time</Typography>
+            <Typography variant="body" sx={{ fontWeight: 700 }}>{title}</Typography>
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                     data={data}

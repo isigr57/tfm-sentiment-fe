@@ -15,4 +15,13 @@ function formatDate(timestamp) {
     return date.toLocaleString('en-US', options).replace(',', '');
 }
 
-export { formatDate };
+const emoji = {
+    'Happy': '😃',
+    'Sad': '😢',
+    'Angry': '😡',
+    'Surprised': '😮',
+    'Disgusted': '🤢',
+    'Neutral': '😐',
+};
+
+export { formatDate, emoji };

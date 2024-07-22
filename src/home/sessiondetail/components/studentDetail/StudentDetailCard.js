@@ -1,5 +1,5 @@
 
-import { KeyboardArrowDownOutlined, KeyboardArrowUpOutlined, LibraryBooksOutlined } from '@mui/icons-material';
+import { AdsClick, KeyboardArrowDownOutlined, KeyboardArrowUpOutlined } from '@mui/icons-material';
 import { Avatar, Box, Collapse, IconButton, Typography, Grid } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { mainBlue } from 'components/CustomColors';
@@ -7,10 +7,13 @@ import { useFirestore } from 'data/FirestoreContext';
 import SessionCard from 'home/sessions/components/SessionCard';
 import { useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
+import { emoji } from 'utils/miscelanea';
+import LineChartCustom from '../charts/LineChartCustom';
+import RadarChartCustom from '../charts/RadarChartCustom';
 
 
 
-const StudentCard = ({ student }) => {
+const StudentDetailCard = ({ student, data }) => {
 
     const { getDocsFromReferences } = useFirestore();
     const [open, setOpen] = useState(false);
@@ -20,6 +23,11 @@ const StudentCard = ({ student }) => {
         event.stopPropagation();
         if (!open) {
             const sessions = await getDocsFromReferences(student.sessions);
+            sessions.forEach(session => {
+                if (window.location.pathname.includes(session.id)) {
+                    session.name = session.name + ' (current session)';
+                }
+            });
             setSessions(sessions);
         }
         setOpen(!open);
@@ -48,9 +56,13 @@ const StudentCard = ({ student }) => {
                 <Typography variant="caption" sx={{ fontWeight: 500 }}>{student.email ? student.email : 'No email'}</Typography>
             </Box>
             <Box flexGrow={1} />
+            <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center', borderRadius: '6px', backgroundColor: grey[300], p: 1 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700 }}>{emoji[data?.emotion ?? 'Neutral']}</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 700 }}>{`${data?.emotion ?? 'Neutral'}`}</Typography>
+            </Box>
             <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
-                <Typography variant="body2" sx={{ fontWeight: 700 }}>{student.sessions.length ?? 0}</Typography>
-                <LibraryBooksOutlined />
+                <Typography variant="body2" sx={{ fontWeight: 700 }}>{`${data?.attention ?? 0}%`}</Typography>
+                <AdsClick />
                 <IconButton onClick={handleClick} >
                     {!open ? <KeyboardArrowDownOutlined sx={{ color: grey[500] }} /> : <KeyboardArrowUpOutlined sx={{ color: grey[500] }} />}
                 </IconButton>
@@ -69,19 +81,26 @@ const StudentCard = ({ student }) => {
                         borderRadius: '0px 0px 6px 6px',
                         backgroundColor: 'white'
                     }}>
-                        <Box sx={{ display: 'flex', gap: 4 }}>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                <Avatar variant='square' sx={{ borderRadius: '6px', width: 150, height: 200 }} src={student.imagePath ?? ''} alt={student.name} />
-                                <Typography variant="body2" sx={{ fontWeight: 500 }}>Student since {new Date(student.createdAt.seconds * 1000).toLocaleDateString()}</Typography>
-                                <Typography variant="h6" sx={{ fontWeight: 700, pt: 2 }}>Recognition Images</Typography>
-                                <Box sx={{ display: 'flex', gap: 1 }}>
-                                    {student.recognitionImages.map((image, index) => (
-                                        <Avatar key={index} variant='square' sx={{ borderRadius: '6px' }} src={image} alt={student.name} />
-                                    ))}
-                                </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
+                                <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>{`Overview`}</Typography>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} md={6} lg={4}  >
+                                        <RadarChartCustom title={`${student.name} | Emotion Radar`} />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={8}  >
+                                        <LineChartCustom />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={6}  >
+                                        <LineChartCustom title={`${student.name} | Attention over time`} />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={6}  >
+                                        <LineChartCustom title={`${student.name} | Presence over time`} />
+                                    </Grid>
+                                </Grid>
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
-                                <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>Sessions ({student.sessions.length})</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>Other Sessions ({student.sessions.length})</Typography>
                                 <Grid container spacing={2} sx={{ maxHeight: 290, overflowY: 'auto' }}>
                                     {sessions.map((session, index) => (
                                         <Grid item xs={12} md={12} lg={12} key={index} >
@@ -99,4 +118,4 @@ const StudentCard = ({ student }) => {
     </>
     );
 }
-export default StudentCard;
+export default StudentDetailCard;

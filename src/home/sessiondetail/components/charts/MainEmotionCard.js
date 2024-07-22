@@ -1,14 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
+import { emoji } from 'utils/miscelanea';
 
-const emoji = {
-    'Happy': '😃',
-    'Sad': '😢',
-    'Angry': '😡',
-    'Surprised': '😮',
-    'Disgusted': '🤢',
-    'Neutral': '😐',
-};
+
 
 const MainEmotionCard = ({ emotion }) => {
 
