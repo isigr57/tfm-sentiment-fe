@@ -10,6 +10,7 @@ import { TransitionGroup } from 'react-transition-group';
 import { emoji } from 'utils/miscelanea';
 import LineChartCustom from '../charts/LineChartCustom';
 import RadarChartCustom from '../charts/RadarChartCustom';
+import MultiLineChartCustom from '../charts/MultiLineChartCustom';
 
 
 
@@ -89,13 +90,13 @@ const StudentDetailCard = ({ student, data }) => {
                                         <RadarChartCustom title={`${student.name} | Emotion Radar`} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={8}  >
-                                        <LineChartCustom />
+                                        <MultiLineChartCustom title={`${student.name} | Emotions over time`}/>
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={6}  >
                                         <LineChartCustom title={`${student.name} | Attention over time`} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={6}  >
-                                        <LineChartCustom title={`${student.name} | Presence over time`} />
+                                        <LineChartCustom lineType={"step"} title={`${student.name} | Presence over time`} />
                                     </Grid>
                                 </Grid>
                             </Box>

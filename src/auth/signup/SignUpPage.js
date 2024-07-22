@@ -61,7 +61,7 @@ const SignUpPage = () => {
         >
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, width: 400, mb: 4 }}>
                 <Box sx={{ mb: 2 }}>
-                    <img src='sapere-long.svg' alt='logo' />
+                    <img src='sapere.svg' alt='logo' height={55} />
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', width: '100%', gap: 0.5, p: 1 }}>
                     <Typography variant='h6' sx={{ fontWeight: 700 }}>

@@ -42,17 +42,17 @@ const data = [
     }
 ];
 
-const RadarChartCustom = ({title}) => {
+const RadarChartCustom = ({ title }) => {
 
     return (
         <Box sx={{ height: 350, backgroundColor: 'white', border: '2px solid, #e9e9e9', borderRadius: '6px', display: 'flex', flexDirection: 'column', p: 2, gap: 2 }}>
             <Typography variant="body" sx={{ fontWeight: 700 }}>{title}</Typography>
             <ResponsiveContainer height='100%' width='100%'>
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                <RadarChart cx="50%" cy="50%" outerRadius="90%" data={data}>
                     <PolarGrid />
                     <PolarAngleAxis dataKey="subject" />
-                    <PolarRadiusAxis />
-                    <Radar name="Mike" dataKey="A" stroke={mainBlue[700]} fill={mainBlue[400]} fillOpacity={0.6} />
+                    <PolarRadiusAxis angle={60} />
+                    <Radar name="Mike" dataKey="A" stroke={mainBlue[700]} fill={mainBlue[200]} fillOpacity={0.6} />
                 </RadarChart>
             </ResponsiveContainer>
         </Box>

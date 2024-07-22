@@ -2,6 +2,18 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { mainBlue } from 'components/CustomColors';
+import { green, orange, purple, red, yellow } from '@mui/material/colors';
+
+const datakeys = ['uv', 'pv', 'amt'];
+
+const lineColors = [
+    { stroke: mainBlue[700], fill: mainBlue[200] },
+    { stroke: green[700], fill: green[200] },
+    { stroke: red[700], fill: red[200] },
+    { stroke: yellow[700], fill: yellow[200] },
+    { stroke: orange[700], fill: orange[200] },
+    { stroke: purple[700], fill: purple[200] },
+];
 
 const data = [
     {
@@ -126,7 +138,7 @@ const data = [
     },
 ];
 
-const LineChartCustom = ({ title, lineType = 'monotone' }) => {
+const MultiLineChartCustom = ({ title }) => {
 
     return (
         <Box sx={{ height: 350, backgroundColor: 'white', border: '2px solid, #e9e9e9', borderRadius: '6px', display: 'flex', flexDirection: 'column', p: 2, gap: 2 }}>
@@ -145,7 +157,11 @@ const LineChartCustom = ({ title, lineType = 'monotone' }) => {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Area type={lineType} dataKey="uv" stroke={mainBlue[700]} fill={mainBlue[200]} />
+                    {
+                        datakeys.map((key, index) => (
+                            <Area type="monotone" dataKey={key} stroke={lineColors[index].stroke} fill={lineColors[index].fill} />
+                        ))
+                    }
                 </AreaChart>
             </ResponsiveContainer>
         </Box>
@@ -154,4 +170,4 @@ const LineChartCustom = ({ title, lineType = 'monotone' }) => {
 
 }
 
-export default LineChartCustom;
+export default MultiLineChartCustom;
