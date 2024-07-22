@@ -90,7 +90,7 @@ const StudentDetailCard = ({ student, data }) => {
                                         <RadarChartCustom title={`${student.name} | Emotion Radar`} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={8}  >
-                                        <MultiLineChartCustom title={`${student.name} | Emotions over time`}/>
+                                        <MultiLineChartCustom title={`${student.name} | Emotions over time`} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={6}  >
                                         <LineChartCustom title={`${student.name} | Attention over time`} />
@@ -100,15 +100,28 @@ const StudentDetailCard = ({ student, data }) => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
-                                <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>Other Sessions ({student.sessions.length})</Typography>
-                                <Grid container spacing={2} sx={{ maxHeight: 290, overflowY: 'auto' }}>
-                                    {sessions.map((session, index) => (
-                                        <Grid item xs={12} md={12} lg={12} key={index} >
-                                            <SessionCard session={session} hideOptions />
-                                        </Grid>))
-                                    }
-                                </Grid>
+                            <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>{`${student.name} | Information`}</Typography>
+                            <Box sx={{ display: 'flex', gap: 4 }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                    <Avatar variant='square' sx={{ borderRadius: '6px', width: 150, height: 200 }} src={student.imagePath ?? ''} alt={student.name} />
+                                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Student since {new Date(student.createdAt.seconds * 1000).toLocaleDateString()}</Typography>
+                                    <Typography variant="h6" sx={{ fontWeight: 700, pt: 2 }}>Recognition Images</Typography>
+                                    <Box sx={{ display: 'flex', gap: 1 }}>
+                                        {student.recognitionImages.map((image, index) => (
+                                            <Avatar key={index} variant='square' sx={{ borderRadius: '6px' }} src={image} alt={student.name} />
+                                        ))}
+                                    </Box>
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
+                                    <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>Other Sessions ({student.sessions.length})</Typography>
+                                    <Grid container spacing={2} sx={{ maxHeight: 290, overflowY: 'auto' }}>
+                                        {sessions.map((session, index) => (
+                                            <Grid item xs={12} md={12} lg={12} key={index} >
+                                                <SessionCard session={session} hideOptions />
+                                            </Grid>))
+                                        }
+                                    </Grid>
+                                </Box>
                             </Box>
                         </Box>
 
