@@ -5,7 +5,7 @@ import { grey } from '@mui/material/colors';
 import { mainBlue } from 'components/CustomColors';
 import { useFirestore } from 'data/FirestoreContext';
 import SessionCard from 'home/sessions/components/SessionCard';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 
 
@@ -16,16 +16,12 @@ const StudentCard = ({ student }) => {
     const [open, setOpen] = useState(false);
     const [sessions, setSessions] = useState([]);
 
-    useEffect(() => {
-        const fetchSessions = async () => {
-            const fetchedSessions = await getDocsFromReferences(student.sessions);
-            setSessions(fetchedSessions);
-        }
-        fetchSessions();
-    }, [student.sessions, getDocsFromReferences]);
-
-    const handleClick = (event) => {
+    const handleClick = async (event) => {
         event.stopPropagation();
+        if (!open) {
+            const sessions = await getDocsFromReferences(student.sessions);
+            setSessions(sessions);
+        }
         setOpen(!open);
     }
 
