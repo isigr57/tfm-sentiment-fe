@@ -31,6 +31,10 @@ const SessionDetailPage = () => {
         fetchData();
     }, [sessionId, getDocsFromReferences, getSession]);
 
+    function capitalize(s) {
+        return s[0].toUpperCase() + s.slice(1);
+    }
+
 
     if (!session) {
         return <Loader />
@@ -47,20 +51,20 @@ const SessionDetailPage = () => {
                     <Typography variant="h6" sx={{ fontWeight: 700, p: 1, pt: 0 }}>Overview</Typography>
                 </Grid>
                 <Grid item xs={12} md={4} lg={4}>
-                    <MainEmotionCard emotion={"Neutral"} />
+                    <MainEmotionCard emotion={capitalize(session.sessionData.mainEmotion)} />
                 </Grid>
                 <Grid item xs={12} md={4} lg={4}>
-                    <GaugeIndicatorCard value={75.2} />
+                    <GaugeIndicatorCard value={session.sessionData.overallAttention} />
                 </Grid>
                 <Grid item xs={12} md={4} lg={4}>
                     <StudentsCountCard value={session.students.length} />
                 </Grid>
 
                 <Grid item xs={12} md={6} lg={4}>
-                    <RadarChartCustom title={"Emotion Radar"}/>
+                    <RadarChartCustom title={"Emotion Radar"} data={session.sessionData.emotionRadar} dataKey={"A"} />
                 </Grid>
                 <Grid item xs={12} md={6} lg={8}>
-                    <LineChartCustom title={"Attention over time"}/>
+                    <LineChartCustom title={"Attention over time"} data={session.sessionData.attentionOverTime} dataKey={'attention'} />
                 </Grid>
                 <Grid item xs={12} md={12} lg={12}>
                     <Typography variant="h6" sx={{ fontWeight: 700, p: 1 }}>{`Students Statics (${session.students.length})`}</Typography>
