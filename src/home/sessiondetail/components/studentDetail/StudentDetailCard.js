@@ -23,6 +23,7 @@ const StudentDetailCard = ({ student, data }) => {
 
     const handleClick = async (event) => {
         event.stopPropagation();
+        setOpen(!open);
         if (!open) {
             const ret = [];
             for (let i = 0; i < student.sessions.length; i++) {
@@ -38,7 +39,6 @@ const StudentDetailCard = ({ student, data }) => {
             console.log(data);
             setSessions(ret);
         }
-        setOpen(!open);
     }
 
     return (<>
@@ -96,13 +96,13 @@ const StudentDetailCard = ({ student, data }) => {
                                         <RadarChartCustom title={`${student.name} | Emotion Radar`} data={data.emotionRadar} dataKey={'A'} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={8}  >
-                                        <MultiLineChartCustom title={`${student.name} | Emotions over time`} />
+                                        <MultiLineChartCustom title={`${student.name} | Emotions over time`} data={data.emotionsOverTime} datakeys={['surprise', 'disgust', 'fear', 'happy', 'sad', 'angry', 'neutral']} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={6}  >
                                         <LineChartCustom title={`${student.name} | Attention over time`} data={data.attentionOverTime} dataKey={'attention'} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={6}  >
-                                        <LineChartCustom lineType={"step"} title={`${student.name} | Presence over time`} />
+                                        <LineChartCustom lineType={"step"} title={`${student.name} | Presence over time`} domain={[-0.5, 1.5]} data={data.presenceOverTime} dataKey={'presence'} />
                                     </Grid>
                                 </Grid>
                             </Box>
@@ -130,7 +130,6 @@ const StudentDetailCard = ({ student, data }) => {
                                 </Box>
                             </Box>
                         </Box>
-
                     </Box>
                 </Collapse>
                 : null}
