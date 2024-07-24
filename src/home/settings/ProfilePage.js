@@ -14,12 +14,14 @@ import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
 
-    const { currentUser, deleteAccount, googleSignIn, emailSignIn, logOut } = useAuth();
+    const { currentUser, deleteAccount, googleSignIn, emailSignIn, logOut, changeDisplayName } = useAuth();
 
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
 
     const [password, setPassword] = useState('');
+    const [newName, setNewName] = useState('');
 
     const navigate = useNavigate();
 
@@ -70,6 +72,24 @@ const ProfilePage = () => {
         navigate('/recoverpassword');
     }
 
+    const handleOpenEditDialog = () => {
+        setOpenEditDialog(true);
+    }
+
+    const handleCloseEditDialog = () => {
+        setOpenEditDialog(false);
+    }
+
+    const handleEditAction = async () => {
+        try {
+            await changeDisplayName(newName);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            handleCloseEditDialog();
+        }
+    }
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} >
             <TopBar name={`Profile`} />
@@ -89,7 +109,10 @@ const ProfilePage = () => {
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="h5" sx={{ fontWeight: 700 }}>{`${(currentUser.displayName ?? currentUser.email)}`}</Typography>
                         <Typography variant="body1" sx={{ fontWeight: 400 }}>{currentUser.email}</Typography>
-                        <MainButton sx={{ mt: 2 }} onClick={handleResetPassword}>Reset Password</MainButton>
+                        <Box sx={{ display: 'flex', gap: 2 }} >
+                            <MainButton sx={{ mt: 2 }} onClick={handleOpenEditDialog}>Edit</MainButton>
+                            <MainButton sx={{ mt: 2 }} onClick={handleResetPassword}>Reset Password</MainButton>
+                        </Box>
                     </Box>
                 </Box>
                 <Box sx={{
@@ -189,6 +212,47 @@ const ProfilePage = () => {
                             <ModalConfirmButton onClick={handlePasswordAction} sx={{ backgroundColor: 'red' }}>
                                 <Typography variant="body2" >
                                     Delete
+                                </Typography>
+                            </ModalConfirmButton>
+                        </Box>
+                    </Box>
+                </Box>
+            </Dialog >
+            <Dialog
+                open={openEditDialog}
+                onClose={handleCloseEditDialog}
+                onClick={(e) => e.stopPropagation()}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                sx={{
+                    borderRadius: '6px',
+                    '& .MuiBackdrop-root': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                        backdropFilter: 'blur(2px)',
+                    }
+                }}
+                fullWidth
+            >
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Box sx={{ p: 1, pb: 0 }}>
+                        <IconButton size="small" sx={{ m: 0, color: 'black' }} onClick={handleCloseEditDialog}>
+                            <CancelOutlined />
+                        </IconButton>
+                    </Box>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 4, pt: 0, }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700 }}>Edit User Name</Typography>
+                    <TextInput label='Name' initialValue={currentUser.displayName ?? ''} placeholder={'User name'} name={'User name'} onChange={(e) => setNewName(e)} multiline={false} />
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                            <ModalCancelButton onClick={handleCloseEditDialog} >
+                                <Typography variant="body2">
+                                    Cancel
+                                </Typography>
+                            </ModalCancelButton>
+                            <ModalConfirmButton onClick={handleEditAction} >
+                                <Typography variant="body2" >
+                                    Save
                                 </Typography>
                             </ModalConfirmButton>
                         </Box>

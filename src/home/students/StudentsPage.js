@@ -4,14 +4,20 @@ import SearchBar from '../components/SearchBar';
 import { useFirestore } from 'data/FirestoreContext';
 import { useEffect, useState } from 'react';
 import StudentCard from './components/StudentCard';
+import Loader from 'components/Loader';
 
 const StudentsPage = () => {
 
     const { students, getStudents } = useFirestore();
     const [filteredStudents, setFilteredStudents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        getStudents();
+        async function fetchData() {
+            await getStudents();
+            setIsLoading(false);
+        }
+        fetchData();
     }, [getStudents]);
 
     useEffect(() => {
@@ -23,6 +29,10 @@ const StudentsPage = () => {
             student.name.toLowerCase().includes(search.toLowerCase())
         );
         setFilteredStudents(filtered);
+    }
+
+    if (isLoading) {
+        return <Loader />
     }
 
     return (

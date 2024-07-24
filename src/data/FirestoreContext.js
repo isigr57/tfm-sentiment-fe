@@ -95,12 +95,9 @@ export const FirestoreProvider = ({ children }) => {
                 const sessionsRef = collection(db, 'sessions');
                 const studentsRef = collection(db, 'students');
                 const session = await getSession(id);
-                console.log(session.students);
                 for (let i = 0; i < session.students.length; i++) {
                     const student = await getStudent(session.students[i]);
-                    console.log(student);
                     const updatedSessions = student.sessions.filter(row => row !== id);
-                    console.log(updatedSessions);
                     await updateDoc(doc(studentsRef, student.id), { sessions: updatedSessions });
                 }
                 await deleteDoc(doc(sessionsRef, id));

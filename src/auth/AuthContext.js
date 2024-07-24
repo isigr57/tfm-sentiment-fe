@@ -8,7 +8,8 @@ import {
     createUserWithEmailAndPassword,
     sendPasswordResetEmail,
     sendEmailVerification,
-    getIdToken
+    getIdToken,
+    updateProfile
 } from 'firebase/auth';
 import { auth } from './FirebaseConfig';
 
@@ -56,6 +57,12 @@ export const AuthContextProvider = ({ children }) => {
         await auth.currentUser.delete();
     }
 
+    const changeDisplayName = async (displayName) => {
+        await updateProfile(auth.currentUser, {
+            displayName: displayName
+        });
+    }
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -74,7 +81,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ googleSignIn, emailSignIn, emailSignUp, recoverPassword, resendVerificationEmail, loading, logOut, currentUser, isEmailVerified, refreshToken, deleteAccount }}>
+        <AuthContext.Provider value={{ googleSignIn, emailSignIn, emailSignUp, recoverPassword, resendVerificationEmail, loading, logOut, currentUser, isEmailVerified, refreshToken, deleteAccount, changeDisplayName}}>
             {children}
         </AuthContext.Provider>
     );

@@ -23,7 +23,6 @@ const SessionDetailPage = () => {
     useEffect(() => {
         async function fetchData() {
             const session = await getSession(sessionId);
-            console.log(session);
             for (let i = 0; i < session.students.length; i++) {
                 session.students[i] = await getStudent(session.students[i]);
             }

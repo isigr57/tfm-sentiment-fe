@@ -7,6 +7,7 @@ import { useFirestore } from 'data/FirestoreContext';
 import SessionCard from 'home/sessions/components/SessionCard';
 import { useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
+import { CircularProgress } from '@mui/material';
 
 
 
@@ -15,20 +16,25 @@ const StudentCard = ({ student }) => {
     const { getSession } = useFirestore();
     const [open, setOpen] = useState(false);
     const [sessions, setSessions] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = async (event) => {
+        setIsLoading(true);
         event.stopPropagation();
+        setOpen(!open);
         if (!open) {
             const ret = [];
             for (let i = 0; i < student.sessions.length; i++) {
                 const value = student.sessions[i];
                 const session = await getSession(value);
-                console.log(session);
-                ret.push(session);
+                if (session) {
+                    ret.push(session);
+                }
             }
+            ret.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
             setSessions(ret);
         }
-        setOpen(!open);
+        setIsLoading(false);
     }
 
     return (<>
@@ -87,12 +93,18 @@ const StudentCard = ({ student }) => {
                                 </Box>
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
-                                <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>Sessions ({student.sessions.length})</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>Sessions ({sessions.length})</Typography>
                                 <Grid container spacing={2} sx={{ maxHeight: 290, overflowY: 'auto' }}>
-                                    {sessions.map((session, index) => (
-                                        <Grid item xs={12} md={12} lg={12} key={index} >
-                                            <SessionCard session={session} hideOptions />
-                                        </Grid>))
+                                    {isLoading
+                                        ?
+                                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: 290 }}>
+                                            <CircularProgress color="inherit" />
+                                        </Box>
+                                        :
+                                        sessions.map((session, index) => (
+                                            <Grid item xs={12} md={12} lg={12} key={index} >
+                                                <SessionCard session={session} hideOptions />
+                                            </Grid>))
                                     }
                                 </Grid>
                             </Box>

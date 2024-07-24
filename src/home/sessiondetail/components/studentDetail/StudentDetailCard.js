@@ -12,6 +12,7 @@ import LineChartCustom from '../charts/LineChartCustom';
 import RadarChartCustom from '../charts/RadarChartCustom';
 import MultiLineChartCustom from '../charts/MultiLineChartCustom';
 import { capitalize } from 'utils/miscelanea';
+import { CircularProgress } from '@mui/material';
 
 
 
@@ -21,7 +22,10 @@ const StudentDetailCard = ({ student, data }) => {
     const [open, setOpen] = useState(false);
     const [sessions, setSessions] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleClick = async (event) => {
+        setIsLoading(true);
         event.stopPropagation();
         setOpen(!open);
         if (!open) {
@@ -29,16 +33,17 @@ const StudentDetailCard = ({ student, data }) => {
             for (let i = 0; i < student.sessions.length; i++) {
                 const value = student.sessions[i];
                 const session = await getSession(value);
-                if (window.location.pathname.includes(session.id)) {
-                    session.name = session.name + ' (current)';
+                if (session) {
+                    if (window.location.pathname.includes(session.id)) {
+                        session.name = session.name + ' (current)';
+                    }
+                    ret.push(session);
                 }
-                console.log(session);
-                ret.push(session);
-                ret.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
             }
-            console.log(data);
+            ret.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
             setSessions(ret);
         }
+        setIsLoading(false);
     }
 
     return (<>
@@ -78,7 +83,7 @@ const StudentDetailCard = ({ student, data }) => {
 
         </Box>
         <TransitionGroup>
-            {open ?
+            {open &&
                 <Collapse>
                     <Box sx={{
                         gap: 2,
@@ -119,20 +124,24 @@ const StudentDetailCard = ({ student, data }) => {
                                     </Box>
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
-                                    <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>Other Sessions ({student.sessions.length})</Typography>
+                                    <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>Other Sessions ({sessions.length})</Typography>
                                     <Grid container spacing={2} sx={{ maxHeight: 290, overflowY: 'auto' }}>
-                                        {sessions.map((session, index) => (
-                                            <Grid item xs={12} md={12} lg={12} key={index} >
-                                                <SessionCard session={session} hideOptions />
-                                            </Grid>))
+
+                                        {isLoading ?
+                                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: 290 }}>
+                                                <CircularProgress color="inherit" />
+                                            </Box>
+                                            : sessions.map((session, index) => (
+                                                <Grid item xs={12} md={12} lg={12} key={index} >
+                                                    <SessionCard session={session} hideOptions />
+                                                </Grid>))
                                         }
                                     </Grid>
                                 </Box>
                             </Box>
                         </Box>
                     </Box>
-                </Collapse>
-                : null}
+                </Collapse>}
         </TransitionGroup >
     </>
     );

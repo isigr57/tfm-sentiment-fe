@@ -10,7 +10,7 @@ import { ModalCancelButton, ModalConfirmButton, PopMenuButton } from 'components
 import { useState } from 'react';
 import { useFirestore } from 'data/FirestoreContext';
 import TextInput from 'components/inputs/TextInput';
-import { useNavigate } from 'react-router-dom';
+import Loader from 'components/Loader';
 
 
 
@@ -21,10 +21,9 @@ const SessionCard = ({ session, hideOptions = false }) => {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [newName, setNewName] = useState(session.name);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { deleteSession, updateSession } = useFirestore();
-
-    const navigate = useNavigate();
 
     const handleClick = (event) => {
         event.stopPropagation();
@@ -37,10 +36,12 @@ const SessionCard = ({ session, hideOptions = false }) => {
     }
 
     const handleDeleteAction = async (event) => {
+        setIsLoading(true);
         event.stopPropagation();
         setAnchorEl(null);
         setOpenDeleteDialog(false);
         await deleteSession(session.id);
+        setIsLoading(false);
     }
 
     const handleCloseDeleteDialog = (event) => {
@@ -55,10 +56,12 @@ const SessionCard = ({ session, hideOptions = false }) => {
     }
 
     const handleEditAction = async (event) => {
+        setIsLoading(true);
         event.stopPropagation();
         setAnchorEl(null);
         setOpenEditDialog(false);
         await updateSession({ ...session, name: newName });
+        setIsLoading(false);
     }
 
     const handleCloseEditDialog = (event) => {
@@ -72,7 +75,15 @@ const SessionCard = ({ session, hideOptions = false }) => {
         setOpenEditDialog(true);
     }
 
+    const navigateToSession = (id) => {
+        if (window.location.pathname.includes(id)) {
+            return;
+        }
+        window.location.href = `/session/${id}`;
+    }
+
     return (<>
+        {isLoading && <Loader />}
         <Box sx={{
             display: 'flex',
             border: '2px solid #e9e9e9',
@@ -87,7 +98,7 @@ const SessionCard = ({ session, hideOptions = false }) => {
                 borderColor: mainBlue[500],
                 backgroundColor: mainBlue[50],
             }
-        }} onClick={() => navigate(`/session/${session.id}`)}>
+        }} onClick={() => navigateToSession(session.id)}>
             <Avatar variant='square' sx={{ borderRadius: '6px' }} src={session.imagePath ?? ''} alt={session.name} />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="body" sx={{ fontWeight: 700 }}>{session.name}</Typography>

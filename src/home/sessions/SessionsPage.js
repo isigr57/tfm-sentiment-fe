@@ -5,15 +5,21 @@ import { useAuth } from 'auth/AuthContext';
 import SessionCard from './components/SessionCard';
 import { useFirestore } from 'data/FirestoreContext';
 import { useEffect, useState } from 'react';
+import Loader from 'components/Loader';
 
 const Sessions = () => {
 
     const { currentUser } = useAuth();
     const { sessions, getSessions } = useFirestore();
     const [filteredSessions, setFilteredSessions] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        getSessions();
+        async function fetchData() {
+            await getSessions();
+            setIsLoading(false);
+        }
+        fetchData();
     }, [getSessions]);
 
     useEffect(() => {
@@ -25,6 +31,10 @@ const Sessions = () => {
             session.name.toLowerCase().includes(search.toLowerCase())
         );
         setFilteredSessions(filtered);
+    }
+
+    if (isLoading) {
+        return <Loader />
     }
 
     return (
