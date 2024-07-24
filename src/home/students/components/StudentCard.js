@@ -12,15 +12,21 @@ import { TransitionGroup } from 'react-transition-group';
 
 const StudentCard = ({ student }) => {
 
-    const { getDocsFromReferences } = useFirestore();
+    const { getSession } = useFirestore();
     const [open, setOpen] = useState(false);
     const [sessions, setSessions] = useState([]);
 
     const handleClick = async (event) => {
         event.stopPropagation();
         if (!open) {
-            const sessions = await getDocsFromReferences(student.sessions);
-            setSessions(sessions);
+            const ret = [];
+            for (let i = 0; i < student.sessions.length; i++) {
+                const value = student.sessions[i];
+                const session = await getSession(value);
+                console.log(session);
+                ret.push(session);
+            }
+            setSessions(ret);
         }
         setOpen(!open);
     }
@@ -51,7 +57,7 @@ const StudentCard = ({ student }) => {
             <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
                 <Typography variant="body2" sx={{ fontWeight: 700 }}>{student.sessions.length ?? 0}</Typography>
                 <LibraryBooksOutlined />
-                <IconButton onClick={handleClick} >
+                <IconButton onClick={async (e) => await handleClick(e)} >
                     {!open ? <KeyboardArrowDownOutlined sx={{ color: grey[500] }} /> : <KeyboardArrowUpOutlined sx={{ color: grey[500] }} />}
                 </IconButton>
             </Box>

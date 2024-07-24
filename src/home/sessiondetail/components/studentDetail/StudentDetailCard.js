@@ -11,25 +11,32 @@ import { emoji } from 'utils/miscelanea';
 import LineChartCustom from '../charts/LineChartCustom';
 import RadarChartCustom from '../charts/RadarChartCustom';
 import MultiLineChartCustom from '../charts/MultiLineChartCustom';
+import { capitalize } from 'utils/miscelanea';
 
 
 
 const StudentDetailCard = ({ student, data }) => {
 
-    const { getDocsFromReferences } = useFirestore();
+    const { getSession } = useFirestore();
     const [open, setOpen] = useState(false);
     const [sessions, setSessions] = useState([]);
 
     const handleClick = async (event) => {
         event.stopPropagation();
         if (!open) {
-            const sessions = await getDocsFromReferences(student.sessions);
-            sessions.forEach(session => {
+            const ret = [];
+            for (let i = 0; i < student.sessions.length; i++) {
+                const value = student.sessions[i];
+                const session = await getSession(value);
                 if (window.location.pathname.includes(session.id)) {
-                    session.name = session.name + ' (current session)';
+                    session.name = session.name + ' (current)';
                 }
-            });
-            setSessions(sessions);
+                console.log(session);
+                ret.push(session);
+                ret.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
+            }
+            console.log(data);
+            setSessions(ret);
         }
         setOpen(!open);
     }
@@ -58,11 +65,11 @@ const StudentDetailCard = ({ student, data }) => {
             </Box>
             <Box flexGrow={1} />
             <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center', borderRadius: '6px', backgroundColor: grey[300], p: 1 }}>
-                <Typography variant="body2" sx={{ fontWeight: 700 }}>{emoji[data?.emotion ?? 'Neutral']}</Typography>
-                <Typography variant="body2" sx={{ fontWeight: 700 }}>{`${data?.emotion ?? 'Neutral'}`}</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 700 }}>{emoji[capitalize(data?.mainEmotion) ?? 'Neutral']}</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 700 }}>{`${capitalize(data?.mainEmotion) ?? 'Neutral'}`}</Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
-                <Typography variant="body2" sx={{ fontWeight: 700 }}>{`${data?.attention ?? 0}%`}</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 700 }}>{`${data?.overallAttention ?? 0}%`}</Typography>
                 <AdsClick />
                 <IconButton onClick={handleClick} >
                     {!open ? <KeyboardArrowDownOutlined sx={{ color: grey[500] }} /> : <KeyboardArrowUpOutlined sx={{ color: grey[500] }} />}
@@ -84,16 +91,15 @@ const StudentDetailCard = ({ student, data }) => {
                     }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} flexGrow={1}>
-                                <Typography variant="h6" sx={{ fontWeight: 700, pb: 1 }}>{`Overview`}</Typography>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} md={6} lg={4}  >
-                                        <RadarChartCustom title={`${student.name} | Emotion Radar`} />
+                                        <RadarChartCustom title={`${student.name} | Emotion Radar`} data={data.emotionRadar} dataKey={'A'} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={8}  >
                                         <MultiLineChartCustom title={`${student.name} | Emotions over time`} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={6}  >
-                                        <LineChartCustom title={`${student.name} | Attention over time`} />
+                                        <LineChartCustom title={`${student.name} | Attention over time`} data={data.attentionOverTime} dataKey={'attention'} />
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={6}  >
                                         <LineChartCustom lineType={"step"} title={`${student.name} | Presence over time`} />

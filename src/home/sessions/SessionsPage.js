@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import TopBar from '../components/TopBar';
 import SearchBar from '../components/SearchBar';
 import { useAuth } from 'auth/AuthContext';
@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 const Sessions = () => {
 
     const { currentUser } = useAuth();
-    const { sessions, getSessions, addDummySession } = useFirestore();
+    const { sessions, getSessions } = useFirestore();
     const [filteredSessions, setFilteredSessions] = useState([]);
 
     useEffect(() => {
@@ -30,7 +30,6 @@ const Sessions = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} >
             <TopBar name={`My Sessions (${filteredSessions.length}) `} />
-            <Button variant="contained" color="primary" onClick={addDummySession} sx={{ m: 4 }}>Add Session</Button>
             <Grid container spacing={2} sx={{ p: 4 }}>
                 <Grid item xs={12} md={6} lg={6}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>

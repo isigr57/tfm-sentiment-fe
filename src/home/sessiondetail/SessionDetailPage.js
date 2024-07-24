@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useFirestore } from 'data/FirestoreContext';
 import { Box, Grid, Typography } from '@mui/material';
 import TopBar from '../components/TopBar';
-import { formatDate } from 'utils/miscelanea';
+import { formatDate, capitalize } from 'utils/miscelanea';
 import { MainButton } from 'components/CustomButtons';
 import { PlayArrowOutlined } from '@mui/icons-material';
 import RadarChartCustom from './components/charts/RadarChartCustom';
@@ -16,7 +16,7 @@ import StudentDetailCard from './components/studentDetail/StudentDetailCard';
 
 const SessionDetailPage = () => {
     const { sessionId } = useParams();
-    const { getSession, getDocsFromReferences } = useFirestore();
+    const { getSession, getStudent } = useFirestore();
 
     const [session, setSession] = useState(null);
 
@@ -24,16 +24,13 @@ const SessionDetailPage = () => {
         async function fetchData() {
             const session = await getSession(sessionId);
             console.log(session);
-            const students = await getDocsFromReferences(session.students);
-            session.students = students;
+            for (let i = 0; i < session.students.length; i++) {
+                session.students[i] = await getStudent(session.students[i]);
+            }
             setSession(session);
         }
         fetchData();
-    }, [sessionId, getDocsFromReferences, getSession]);
-
-    function capitalize(s) {
-        return s[0].toUpperCase() + s.slice(1);
-    }
+    }, [sessionId, getStudent, getSession]);
 
 
     if (!session) {
@@ -44,12 +41,9 @@ const SessionDetailPage = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <TopBar
                 name={`${session.name} | ${formatDate(session.createdAt)}`}
-                button={<MainButton startIcon={<PlayArrowOutlined />}>Watch</MainButton>}
+                button={<MainButton startIcon={<PlayArrowOutlined />} onClick={() => window.location.href = session.videoUrl}>Watch</MainButton>}
             />
             <Grid container spacing={2} sx={{ p: 4 }}>
-                <Grid item xs={12} md={12} lg={12}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, p: 1, pt: 0 }}>Overview</Typography>
-                </Grid>
                 <Grid item xs={12} md={4} lg={4}>
                     <MainEmotionCard emotion={capitalize(session.sessionData.mainEmotion)} />
                 </Grid>
@@ -71,7 +65,7 @@ const SessionDetailPage = () => {
                 </Grid>
                 {session.students.map((student, index) => (
                     <Grid item key={index} xs={12} md={12} lg={12}>
-                        <StudentDetailCard student={student} />
+                        <StudentDetailCard student={student} data={session.studentsData[student.id]} />
                     </Grid>
                 ))}
             </Grid>
