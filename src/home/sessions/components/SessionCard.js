@@ -99,7 +99,7 @@ const SessionCard = ({ session, hideOptions = false }) => {
                 backgroundColor: mainBlue[50],
             }
         }} onClick={() => navigateToSession(session.id)}>
-            <Avatar variant='square' sx={{ borderRadius: '6px' }} src={session.imagePath ?? ''} alt={session.name} />
+            <Avatar variant='square' sx={{ borderRadius: '6px'}} src={session.miniatureUrl ?? ''} alt={session.name} />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="body" sx={{ fontWeight: 700 }}>{session.name}</Typography>
                 <Typography variant="caption" sx={{ fontWeight: 500 }}>{session.createdAt ? formatDate(session.createdAt) : 'No date'}</Typography>
